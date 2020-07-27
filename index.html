@@ -17,14 +17,10 @@
     <script type="text/javascript" src="assets/lib/jquery-3.5.1.min.js"></script>
 
     <script type="text/paperscript" canvas="mycanvas">
-      var gridWidth = window.innerWidth;  
-      var gridHeight = window.innerHeight;
-  
-      var wRef = 255 * gridWidth;
-      var hRef = 255 * gridHeight;
+      var maxPoint  = new Point(view.size.width, view.size.height);
 
-      for (var x=0; x <= gridWidth; x += 20){
-        for (var y = 0; y <= gridHeight; y += 20){
+      for (var x=0; x <= maxPoint.x; x += 20){
+        for (var y = 0; y <= maxPoint.y; y += 20){
           var origin = new Point(x, y);
           var termination = new Point(x+50, y+50);
           var rectangle = new Rectangle(origin, termination);
@@ -42,9 +38,9 @@
       text.fillColor = 'black';
     
       function rgbCode(pnt){
-        var r = ((pnt.x * 255) / wRef) * 255;
-        var g = ((pnt.y * 255) / hRef) * 255;
-        var b =  255 - ((((pnt.y + pnt.x) / 2) * 255) / ((hRef + wRef) / 2) * 255);  
+        var r = (pnt.x / maxPoint.x) * 255;
+        var g = (pnt.y / maxPoint.y) * 255;
+        var b = 255 - (Math.max((pnt.x / maxPoint.x), (pnt.y / maxPoint.y)) * 255);
 
         return "rgb(" + Math.ceil(r) + ", " + Math.ceil(g) + "," + Math.ceil(b) + ")";
       }
@@ -62,6 +58,7 @@
         var shift = new Point(60, 0);
         var size = new Size(shift);
         path.position = event.point;
+        // text.content = event.point;
         text.content = rgbCode(event.point);
         if (event.point.x + shift.x + size.width >= maxPoint.x) {
           text.position = event.point - shift;
