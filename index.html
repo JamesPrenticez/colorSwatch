@@ -49,13 +49,19 @@
         return "rgb(" + Math.ceil(r) + ", " + Math.ceil(g) + "," + Math.ceil(b) + ")";
       }
 
+      var path = new Path.Circle({
+        center: [0, 0],
+        radius: 2,
+        fillColor: 'black'
+      });
+      
       tool.onMouseMove = function(event) {
         // Whenever the user moves the mouse, move the path
         // to that position:
         var maxPoint  = new Point(view.size.width, view.size.height);
         var shift = new Point(60, 0);
         var size = new Size(shift);
-        
+        path.position = event.point;
         text.content = rgbCode(event.point);
         if (event.point.x + shift.x + size.width >= maxPoint.x) {
           text.position = event.point - shift;
