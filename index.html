@@ -25,15 +25,44 @@
 
       for (var x=0; x <= gridWidth; x += 20){
         for (var y = 0; y <= gridHeight; y += 20){
-          var rectangle = new Rectangle(new Point(x, y), new Point(x+50, y+50));
+          var origin = new Point(x, y);
+          var termination = new Point(x+50, y+50);
+          var rectangle = new Rectangle(origin, termination);
           var path = new Path.Rectangle(rectangle);
-          var r = ((x * 255) / wRef) * 255;
-          var g = ((y * 255) / hRef) * 255;
-          var b =  255 - r - g; 
+          
 
-          path.fillColor = "rgb(" + r + ", " + g + "," + b + ")";
+          path.fillColor = rgbCode(origin);
           path.selected = false;
         }
+      }
+      // Create a circle shaped path with a radius of 10 at {x: 0, y: 0}:
+
+      var text = new PointText(new Point(200, 50));
+      text.justification = 'left';
+      text.fillColor = 'black';
+    
+      function rgbCode(pnt){
+        var r = ((pnt.x * 255) / wRef) * 255;
+        var g = ((pnt.y * 255) / hRef) * 255;
+        var b =  255 - ((((pnt.y + pnt.x) / 2) * 255) / ((hRef + wRef) / 2) * 255);  
+
+        return "rgb(" + Math.ceil(r) + ", " + Math.ceil(g) + "," + Math.ceil(b) + ")";
+      }
+
+      tool.onMouseMove = function(event) {
+        // Whenever the user moves the mouse, move the path
+        // to that position:
+        var maxPoint  = new Point(view.size.width, view.size.height);
+        var shift = new Point(60, 0);
+        var size = new Size(shift);
+        
+        text.content = rgbCode(event.point);
+        if (event.point.x + shift.x + size.width >= maxPoint.x) {
+          text.position = event.point - shift;
+        } else {
+          text.position = event.point + shift;
+        }
+        
       }
     </script>
     
