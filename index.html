@@ -19,10 +19,10 @@
     <script type="text/paperscript" canvas="mycanvas">
       var maxPoint  = new Point(view.size.width, view.size.height);
 
-      for (var x=0; x <= maxPoint.x; x += 20){
-        for (var y = 0; y <= maxPoint.y; y += 20){
+      for (var x=0; x <= maxPoint.x; x += 10){
+        for (var y = 0; y <= maxPoint.y; y += 10){
           var origin = new Point(x, y);
-          var termination = new Point(x+50, y+50);
+          var termination = new Point(x+10, y+10);
           var rectangle = new Rectangle(origin, termination);
           var path = new Path.Rectangle(rectangle);
           
@@ -31,6 +31,11 @@
           path.selected = false;
         }
       }
+      $('#loader').fadeOut(2000, function(evt){
+        $(this).removeClass('animate');
+        $('#loading').css("display","none");
+      })
+      $('canvas').css('opacity', '1');
       // Create a circle shaped path with a radius of 10 at {x: 0, y: 0}:
 
       var text = new PointText(new Point(200, 50));
@@ -74,6 +79,7 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <div id="loading"><img id="loader" class="animate" src="https://anthony-kyle.github.io/images/PilcrowMicroLogo.png" alt="PilcrowMicro"></div>
     <canvas id="mycanvas" resize="true"></canvas>
     
   </body>
